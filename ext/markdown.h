@@ -14,7 +14,7 @@ typedef struct footnote {
 } Footnote;
 
 /* each input line is read into a Line, which contains the line,
- * the offset of the first non-space character [this assumes 
+ * the offset of the first non-space character [this assumes
  * that all tabs will be expanded to spaces!], and a pointer to
  * the next line.
  */

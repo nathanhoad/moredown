@@ -148,14 +148,14 @@ isopentag(Line *p)
     /* find how long the tag is so we can check to see if
      * it's a block-level tag
      */
-    for ( i=1; i < len && T(p->text)[i] != '>' 
+    for ( i=1; i < len && T(p->text)[i] != '>'
 		       && T(p->text)[i] != '/'
 		       && !isspace(T(p->text)[i]); ++i )
 	;
 
     key.id = T(p->text)+1;
     key.siz = i-1;
-    
+
     if ( ret = bsearch(&key,blocktags,SZTAGS,sizeof key, (stfu)casort))
 	return ret->id;
 
@@ -375,7 +375,7 @@ islist(Line *t, int *trim)
 {
     int i, j;
     char *q;
-    
+
     if ( iscode(t) || blankline(t) || ishdr(t,&i) || ishr(t) )
 	return 0;
 
@@ -423,7 +423,7 @@ headerblock(Paragraph *pp, int htyp)
 	    /* p->text is header, p->next->text is -'s or ='s
 	     */
 	    pp->hnumber = (T(p->next->text)[0] == '=') ? 1 : 2;
-	    
+
 	    ret = p->next->next;
 	    ___mkd_freeLine(p->next);
 	    p->next = 0;
@@ -576,7 +576,7 @@ isdivmarker(Line *p)
  * it just takes ^> to start a quote, following lines, if quoted,
  * assume that the prefix is ``>''.   This means that code needs
  * to be indented *5* spaces from the leading '>', but *4* spaces
- * from the start of the line.   This does not appear to be 
+ * from the start of the line.   This does not appear to be
  * documented in the reference implementation, but it's the
  * way the markdown sample web form at Daring Fireball works.
  */
@@ -602,14 +602,14 @@ quoteblock(Paragraph *p)
     if ( isdivmarker(p->text) ) {
 	char *prefix = "class";
 	int i;
-	
+
 	q = p->text;
 	p->text = p->text->next;
 
 	if ( (i = szmarkerclass(1+T(q->text))) == 3 )
 	    /* and this would be an "%id:" prefix */
 	    prefix="id";
-	    
+
 	if ( p->ident = malloc(4+i+S(q->text)) )
 	    sprintf(p->ident, "%s=\"%.*s\"", prefix, S(q->text)-(i+2),
 						     T(q->text)+(i+1) );
@@ -743,7 +743,7 @@ addfootnote(Line *p, MMIOT* f)
     Line *np = p->next;
 
     Footnote *foot = &EXPAND(*f->footnotes);
-    
+
     CREATE(foot->tag);
     CREATE(foot->link);
     CREATE(foot->title);
@@ -859,14 +859,14 @@ compile(Line *ptr, int toplevel, MMIOT *f)
 	}
 	else if ( iscode(ptr) ) {
 	    p = Pp(&d, ptr, CODE);
-	    
+
 	    if ( f->flags & MKD_1_COMPAT) {
 		/* HORRIBLE STANDARDS KLUDGE: the first line of every block
 		 * has trailing whitespace trimmed off.
 		 */
 		___mkd_tidy(p->text);
 	    }
-	    
+
 	    ptr = codeblock(p);
 	}
 	else if ( ishr(ptr) ) {

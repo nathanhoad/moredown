@@ -122,7 +122,7 @@ static void
 Qchar(char c, MMIOT *f)
 {
     block *cur;
-    
+
     if ( S(f->Q) == 0 ) {
 	cur = &EXPAND(f->Q);
 	memset(cur, 0, sizeof *cur);
@@ -132,7 +132,7 @@ Qchar(char c, MMIOT *f)
 	cur = &T(f->Q)[S(f->Q)-1];
 
     EXPAND(cur->b_text) = c;
-    
+
 }
 
 
@@ -192,7 +192,7 @@ Qem(MMIOT *f, char c, int count)
 static int
 empair(MMIOT *f, int go, int level)
 {
-    
+
     int i;
     block *begin, *p;
 
@@ -202,7 +202,7 @@ empair(MMIOT *f, int go, int level)
 
 	if ( (p->b_type != bTEXT) && (p->b_count <= 0) )
 	    break;
-	
+
 	if ( p->b_type == begin->b_type ) {
 	    if ( p->b_count == level )	/* exact match */
 		return i-go;
@@ -257,7 +257,7 @@ emmatch(MMIOT *f, int go)
 	    if ( e == EOF || ((e2 != EOF) && (e2 >= e)) ) {
 		e = e2;
 		match = 2;
-	    } 
+	    }
 	    else
 		match = 1;
 	}
@@ -271,7 +271,7 @@ emmatch(MMIOT *f, int go)
 	    for (i=0; i < match; i++)
 		EXPAND(start->b_text) = start->b_char;
 	}
-	
+
 	start->b_count -= match;
     }
 }
@@ -287,7 +287,7 @@ ___mkd_emblock(MMIOT *f)
 
     for (i=0; i < S(f->Q); i++) {
 	p = &T(f->Q)[i];
-	
+
 	if ( p->b_type != bTEXT ) emmatch(f, i);
 
 	if ( S(p->b_post) ) { SUFFIX(f->out, T(p->b_post), S(p->b_post));
@@ -307,17 +307,17 @@ ___mkd_reparse(char *bfr, int size, int flags, MMIOT *f)
     MMIOT sub;
 
     ___mkd_initmmiot(&sub, f->footnotes);
-    
+
     sub.flags = f->flags | flags;
     sub.base = f->base;
 
     push(bfr, size, &sub);
     EXPAND(sub.in) = 0;
     S(sub.in)--;
-    
+
     text(&sub);
     ___mkd_emblock(&sub);
-    
+
     Qwrite(T(sub.out), S(sub.out), f);
 
     ___mkd_freemmiot(&sub, f->footnotes);
@@ -438,7 +438,7 @@ linkysize(MMIOT *f, int *heightp, int *widthp)
     *heightp = 0;
     *widthp = 0;
 
-    if ( (c = eatspace(f)) != '=' ) 
+    if ( (c = eatspace(f)) != '=' )
 	return (c != EOF);
     pull(f);	/* eat '=' */
 
@@ -553,7 +553,7 @@ linkykey(int image, Footnote *val, MMIOT *f)
 
 /*
  * all the tag types that linkylinky can produce are
- * defined by this structure. 
+ * defined by this structure.
  */
 typedef struct linkytype {
     char      *pat;
@@ -671,7 +671,7 @@ cputc(int c, MMIOT *f)
     }
 }
 
- 
+
 /*
  * convert an email address to a string of nonsense
  */
@@ -936,7 +936,7 @@ text(MMIOT *f)
 		    else
 			Qchar(c, f);
 		    break;
-			
+
 	case '!':   if ( peek(f,1) == '[' ) {
 			pull(f);
 			if ( tag_text(f) || !linkylinky(1, f) )
@@ -984,7 +984,7 @@ text(MMIOT *f)
 			Qem(f,c,rep);
 		    }
 		    break;
-	
+
 	case '`':   if ( tag_text(f) || !iscodeblock(f) )
 			Qchar(c, f);
 		    else {
@@ -1046,7 +1046,7 @@ static int
 iscodeblock(MMIOT *f)
 {
     int i=1, single = 1, c;
-    
+
     if ( peek(f,i) == '`' ) {
 	single=0;
 	i++;
@@ -1059,7 +1059,7 @@ iscodeblock(MMIOT *f)
 	i++;
     }
     return 0;
-    
+
 }
 
 static int
@@ -1102,7 +1102,7 @@ code(int escape, MMIOT *f)
 	case '\\':  cputc(c, f);
 		    if ( peek(f,1) == '>' || (c = pull(f)) == EOF )
 			break;
-	
+
 	default:    cputc(c, f);
 		    break;
 	}
@@ -1184,10 +1184,10 @@ static void
 printhtml(Line *t, MMIOT *f)
 {
     int blanks;
-    
+
     for ( blanks=0; t ; t = t->next )
 	if ( S(t->text) ) {
-	    for ( ; blanks; --blanks ) 
+	    for ( ; blanks; --blanks )
 		Qchar('\n', f);
 
 	    Qwrite(T(t->text), S(t->text), f);
@@ -1267,7 +1267,7 @@ static Paragraph*
 display(Paragraph *p, MMIOT *f)
 {
     if ( !p ) return 0;
-    
+
     switch ( p->typ ) {
     case STYLE:
     case WHITESPACE:
@@ -1276,15 +1276,15 @@ display(Paragraph *p, MMIOT *f)
     case HTML:
 	printhtml(p->text, f);
 	break;
-	
+
     case CODE:
 	printcode(p->text, f);
 	break;
-	
+
     case QUOTE:
 	htmlify(p->down, p->ident ? "div" : "blockquote", p->ident, f);
 	break;
-	
+
     case UL:
     case OL:
     case AL:
@@ -1364,7 +1364,7 @@ mkd_text(char *bfr, int size, FILE *output, int flags)
 
     ___mkd_initmmiot(&f, 0);
     f.flags = flags & USER_FLAGS;
-    
+
     ___mkd_reparse(bfr, size, 0, &f);
     ___mkd_emblock(&f);
     if ( flags & CDATA_OUTPUT )
