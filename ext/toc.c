@@ -22,7 +22,7 @@ mkd_toc(Document *p, char **doc)
     Paragraph *pp;
     int last_hnumber = 0;
     Cstring res;
-    
+
     CREATE(res);
     RESERVE(res, 100);
 
@@ -33,7 +33,7 @@ mkd_toc(Document *p, char **doc)
 
     for ( pp = p->code; pp ; pp = pp->next ) {
         if ( pp->typ == HDR && pp->text ) {
-	    
+
 	    if ( last_hnumber == pp->hnumber )
 		Csprintf(&res,  "%*s</li>\n", pp->hnumber, "");
 	    else while ( last_hnumber > pp->hnumber ) {
@@ -42,7 +42,7 @@ mkd_toc(Document *p, char **doc)
 				 last_hnumber-1,"");
 		--last_hnumber;
 	    }
-	    
+
 	    while ( pp->hnumber > last_hnumber ) {
 		Csprintf(&res, "\n%*s<ul>\n", pp->hnumber, "");
 		++last_hnumber;

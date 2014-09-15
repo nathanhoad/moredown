@@ -41,35 +41,35 @@ implements some extras:
         html = Moredown.text_to_html("Hello World!")
 
  * Remap relative URLs
- 
+
         Moredown.new(text, :base_url => 'http://nathanhoad.net').to_html
 
  * Remap headings (eg. h1 becomes h3).
- 
+
         Moredown.new(text, :map_headings => 2)
 
  * Embed Youtube videos (similar to image syntax except the title text is used for width and height)
- 
+
         ![Video](youtube:lfAzVe5H-vE)
         ![Blah](youtube:lfAzVe5H-vE "400 300")
- 
+
  * Use Flash movies (include the width and height if you want)
- 
+
         ![Flash](flash:movieclip.swf)
         ![Something](flash:something.swf "200 100")
 
  * Use SwfObject (javascript not included) for graceful Flash degradation
- 
+
         Moredown.new(text, :swfobject => { :src => 'swfobject.js', :version => '10', :fallback => 'No Flash' })
 
  * Image alignments (extension to image syntax)
- 
+
         ![Image](/images/test.jpg):left
         ![Image](/images/test.jpg):right
         ![Image](/images/test.jpg):center
 
  * Emoticons
- 
+
         :-)
         :-P
         :-D
@@ -78,7 +78,7 @@ implements some extras:
         ;-)
 
  * RDiscount extensions are now passed under `:extensions`
- 
+
         Moredown.new(text, :extensions => [:smart])
 
 RDiscount implements the basic protocol popularized by RedCloth and adopted
@@ -97,7 +97,7 @@ require statements with the following:
     rescue LoadError
       require 'bluecloth'
     end
-    
+
 
 COPYING
 -------
